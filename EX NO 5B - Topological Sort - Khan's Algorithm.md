@@ -1,6 +1,6 @@
 
 # EX 5B Topological Sort - Khan's Algorithm
-## DATE:
+## DATE: 08.09.2026
 ## AIM:
 To write a Java program to for given constraints.
 Problem Description:
@@ -27,22 +27,76 @@ If not, print "Release cannot be scheduled".
 <img width="341" height="363" alt="image" src="https://github.com/user-attachments/assets/f0355541-4f66-49da-bcd3-171a799a7c1f" />
 
 ## Algorithm
-1. 
-2. 
-3. 
-4.  
-5.   
+1. Start and create a graph and an indegree[] array to store the number of dependencies for each task.
+2. Add each dependency to the graph and increase the indegree of the dependent task.
+3. Add all tasks with indegree 0 to a queue.
+4. Remove tasks from the queue, add them to the order, decrease the indegree of their neighboring tasks, and add newly zero-indegree tasks to the queue.
+5. If all n tasks are ordered, return the task order; otherwise, a cycle exists and scheduling is impossible.
 
 ## Program:
 ```
 /*
 Program to implement Reverse a String
-Developed by: 
-Register Number:  
+Developed by: EZHIL NEVEDHA K
+Register Number:  212223230055
 */
+import java.util.*;
+
+public class prog{
+
+    public static List<Integer> findTaskOrder(int n, int[][] dependencies) {
+       //Write your code
+       List<Integer> order=new ArrayList<>();
+       List<List<Integer>> graph=new ArrayList<>();
+       int[] indegree=new int[n];
+       for(int i=0;i<n;i++) graph.add(new ArrayList<>());
+       for(int[] dep:dependencies){
+           graph.get(dep[1]).add(dep[0]);
+           indegree[dep[0]]++;
+       }
+       Queue<Integer> q=new LinkedList<>();
+       for(int i=0;i<n;i++){
+           if(indegree[i]==0) q.offer(i);
+       }
+       while(!q.isEmpty()){
+           int curr=q.poll();
+           order.add(curr);
+           for(int nb:graph.get(curr)){
+               indegree[nb]--;
+               if(indegree[nb]==0) q.offer(nb);
+           }
+       }
+       if(order.size()!=n) return null;
+       return order;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt(); // number of tasks
+        int m = sc.nextInt(); // number of dependencies
+
+        int[][] dependencies = new int[m][2];
+        for (int i = 0; i < m; i++) {
+            dependencies[i][0] = sc.nextInt(); // a
+            dependencies[i][1] = sc.nextInt(); // b
+        }
+
+        List<Integer> result = findTaskOrder(n, dependencies);
+
+        if (result == null) {
+            System.out.println("Release cannot be scheduled");
+        } else {
+            for (int task : result) {
+                System.out.print(task + " ");
+            }
+        }
+    }
+}
+
 ```
 
 ## Output:
+<img width="757" height="470" alt="image" src="https://github.com/user-attachments/assets/f95a8b43-0705-4299-8584-0b73d394f110" />
 
 
 
